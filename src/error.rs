@@ -1,15 +1,15 @@
 use core::fmt::Debug;
 
-use embedded_hal::can::Error as CanError;
+use embedded_can::Error as CanError;
 
 use crate::{CanSpeed, McpSpeed};
 
-pub type Result<T, SPI, HAL> = core::result::Result<T, Error<SPI, HAL>>;
+pub type Result<T, SPI> = core::result::Result<T, Error<SPI>>;
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[cfg_attr(feature = "ufmt", derive(ufmt::derive::uDebug))]
-pub enum Error<SPI: Debug, HAL: Debug> {
+pub enum Error<SPI: Debug> {
     /// MCP2515 did not respond to mode change.
     NewModeTimeout,
     /// Tx buffers are full and therefore cannot send another message.
@@ -26,12 +26,10 @@ pub enum Error<SPI: Debug, HAL: Debug> {
     InvalidConfiguration(CanSpeed, McpSpeed),
     /// SPI error.
     Spi(SPI),
-    /// Error from HAL crate.
-    Hal(HAL),
 }
 
-impl<SPI: Debug, HAL: Debug> CanError for Error<SPI, HAL> {
-    fn kind(&self) -> embedded_hal::can::ErrorKind {
-        embedded_hal::can::ErrorKind::Other
+impl<SPI: Debug> CanError for Error<SPI> {
+    fn kind(&self) -> embedded_can::ErrorKind {
+        embedded_can::ErrorKind::Other
     }
 }

@@ -411,6 +411,18 @@ pub enum IntFlagCode {
     RXB1,
 }
 
+#[bitfield]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+#[cfg_attr(feature = "ufmt", derive(ufmt::derive::uDebug))]
+pub struct Tec(u8);
+
+#[bitfield]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+#[cfg_attr(feature = "ufmt", derive(ufmt::derive::uDebug))]
+pub struct Rec(u8);
+
 macro_rules! reg {
     ($($s:ty => $reg:expr),*) => {
         $(
@@ -450,5 +462,7 @@ reg! {
     Cnf2 => Register::CNF2,
     Cnf3 => Register::CNF3,
     Rxb0Ctrl => Register::RXB0CTRL,
-    Rxb1Ctrl => Register::RXB1CTRL
+    Rxb1Ctrl => Register::RXB1CTRL,
+    Tec => Register::TEC,
+    Rec => Register::REC
 }
